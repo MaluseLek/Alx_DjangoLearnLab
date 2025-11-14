@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
+from django.contrib.auth.decorators import user_passes_test
 
 
 # Function-based view to display a list of books in the database
@@ -47,3 +48,27 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('login')
 
 """
+
+# Role-Based Access Control
+#
+#
+def is_role(user, role_name):
+    return hasattr(user, 'userprofile') and user.userprofile.role == role_name
+
+
+# Admin-only view 
+@user_passes_test(lambda user: is_role(user, 'admin'))
+def admin_dashboard(request):
+    return render(request, 'relationship_app/admin_dashboard.html')
+
+
+# Librarian-only view
+@user_passes_test(lambda user: is_role(user, 'librarian'))
+def librarian_dashboard(request):
+    return render(request, 'relationship_app/librarian_dashboard.html')
+
+
+# Member-only view
+@user_passes_test(lambda user: is_role(user, 'member'))
+def member_dashboard(request):
+    return render(request, 'relationship_app/member_dashboard.html')
