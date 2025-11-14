@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from .models import Book
 from .models import Library
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
+
 
 # Function-based view to display a list of books in the database
 def list_books(request):
@@ -19,3 +23,11 @@ class LibraryDetailView(DetailView):
     # Prefetch related books to reduce DB queries
     def get_queryset(self):
         return Library.objects.prefetch_related('books')
+    
+
+
+# Add Register your views in urls.py to make them accessible via URLs.
+class RegisterView(CreateView):
+    form_class = UserCreationForm
+    template_name = 'relationship_app/register.html'
+    success_url = reverse_lazy('login')
