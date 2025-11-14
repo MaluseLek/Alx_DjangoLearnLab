@@ -37,10 +37,13 @@ def register(request):
     else:
         form = UserCreationForm()
 
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, 'relationship_app/register.html', {'form': form})
 
-# Add Register your views in urls.py to make them accessible via URLs.
+"""
+# Class-Based View - RECOMMENDED
 class RegisterView(CreateView):
     form_class = UserCreationForm
     template_name = 'relationship_app/register.html'
     success_url = reverse_lazy('login')
+
+"""
