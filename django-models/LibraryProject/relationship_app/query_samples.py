@@ -51,10 +51,13 @@ print("\n" + "-"*40 + "\n")
 
 # Retrieve the librarian for a library
 try:
-    librarian_name = Librarian.objects.get(library__name=library_name)
-    print(f"\nLibrarian for {library_name}: {librarian_name.name}")
+    # First, get the library object. We can reuse library_name from above.
+    library = Library.objects.get(name=library_name)
+    # Then, get the librarian associated with that library object.
+    librarian = Librarian.objects.get(library=library)
+    print(f"\nLibrarian for {library.name}: {librarian.name}")
+except Library.DoesNotExist:
+    print(f"The library '{library_name}' was not found.")
 except Librarian.DoesNotExist:
     print(f"No librarian found for {library_name}.")
-except MultipleObjectsReturned:
-    print(f"Multiple librarians found for {library_name}.")
 print("\n" + "-"*40 + "\n")
