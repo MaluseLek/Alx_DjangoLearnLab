@@ -1,0 +1,3 @@
+{% if user.is_authenticated %}
+    <p>Logged in as: {{ user.username }} | Role: {{ user.userprofile.role }}</p>
+{% endif %}
