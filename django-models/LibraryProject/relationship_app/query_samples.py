@@ -14,14 +14,20 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 # Query all books by a specific author
 author_name = "George Orwell"
-books_by_author = Book.objects.filter(author__name=author_name)
+try:
+    # First, get the specific author object
+    author = Author.objects.get(name=author_name)
+    # Then, find all books by that author. This is more direct than a reverse lookup.
+    books_by_author = Book.objects.filter(author=author)
 
-if books_by_author.exists():
-    print(f"Books by {author_name}:")
-    for book in books_by_author:
-        print(f"- {book.title}")
-else:
-    print(f"No books found by {author_name}.")
+    if books_by_author.exists():
+        print(f"Books by {author.name}:")
+        for book in books_by_author:
+            print(f"- {book.title}")
+    else:
+        print(f"No books found by {author.name}.")
+except Author.DoesNotExist:
+    print(f"Author '{author_name}' not found.")
 print("\n" + "-"*40 + "\n")
 
 
