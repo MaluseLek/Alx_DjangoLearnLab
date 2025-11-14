@@ -27,14 +27,19 @@ print("\n" + "-"*40 + "\n")
 
 # List all books in a library
 library_name = "City Library"
-library_books = Book.objects.filter(libraries__name=library_name)
-
-if library_books.exists():
-    print(f"\nBooks in {library_name}:")
-    for book in library_books:
-        print(f"- {book.title} by {book.author.name}")
-else:
-    print(f"No books found in {library_name}.")
+try:
+    # First, get the specific library object
+    library = Library.objects.get(name=library_name)
+    # Then, get all books related to that library
+    library_books = library.books.all()
+    if library_books.exists():
+        print(f"\nBooks in {library.name}:")
+        for book in library_books:
+            print(f"- {book.title} by {book.author.name}")
+    else:
+        print(f"No books found in {library.name}.")
+except Library.DoesNotExist:
+    print(f"The library '{library_name}' was not found.")
 print("\n" + "-"*40 + "\n")
 
 
